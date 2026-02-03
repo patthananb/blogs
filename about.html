@@ -3,16 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - My Blog</title>
+    <title>About Me - My Blog</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header>
         <nav class="container">
-            <a href="index.html" class="logo">My Blog</a>
+            <div class="nav-left">
+                <button class="hamburger" id="hamburger" aria-label="Open menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="index.html" class="logo">My Blog</a>
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="about.html">About Me</a></li>
             </ul>
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
                 <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -21,25 +28,41 @@
         </nav>
     </header>
 
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Categories</h3>
+            <button class="sidebar-close" id="sidebar-close" aria-label="Close menu">&times;</button>
+        </div>
+        <nav class="sidebar-nav" id="sidebar-nav">
+            <!-- Categories will be loaded here -->
+        </nav>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
     <main class="container">
         <article class="post-content">
             <h1>About Me</h1>
             <div class="markdown-body">
-                <p>Welcome to my blog! This is where I share my thoughts, ideas, and experiences.</p>
+                <h2>Early Life</h2>
+                <p>I was born Patthanan Bean Bhandhumanee on September 28, 2001, in Saraburi, Thailand, and grew up in Trang. Three years after I was born, I have a sister named Bam. My grandmother and my mom raised me up in Trang.</p>
                 
-                <h2>About This Blog</h2>
-                <p>This blog is built with simplicity in mind. All posts are written in Markdown, making it easy to focus on writing without worrying about formatting.</p>
+                <h2>Education</h2>
+                <p>I studied kindergarten and elementary school at Buranalumuk School. When I turned 15, I moved to Bangkok to study for my Vocational Certificate degree in Electrical Technician at King Mongkut's University of Technology North Bangkok (KMUTNB). After that, I continued studying at the same university for my Bachelor's Degree in Electrical Engineering. I didn't do well in university and took 6 years to finish my degree.</p>
                 
-                <h2>How to Add New Posts</h2>
-                <ol>
-                    <li>Create a new <code>.md</code> file in the <code>posts/</code> folder</li>
-                    <li>Write your content in Markdown</li>
-                    <li>Add the post info to <code>js/posts.js</code></li>
-                    <li>That's it! Your post will appear on the homepage</li>
-                </ol>
+                <p>During my university years, I felt disoriented by the people who taught me—some were good, some were bad. I spent my 6 years mostly studying for myself. I am using this space to praise the good teachers that I admire in my life.</p>
+                
+                <h2>Teachers Who Inspired Me</h2>
+                
+                <h3>Dr.Ing. Rawat Siripokapirom</h3>
+                <p>He is the one who inspired me to create this blog. He taught me so many things: embedded systems, electrical circuits, signal and systems, and especially computer programming and computer stuff. I am a dude with plenty of curiosity in my pocket, and when I try to build something, he will have the components for me every time and he gives them without hesitation—how generous is he? Some have said, "If you talked to him today, he may not know or understand, and if you come see him tomorrow, he will be an expert in that field."</p>
+                
+                <h3>Dr. Bunlung Neammanee & Dr. Jirawut Benjanarasut</h3>
+                <p>I pack these two professors in a pair because when I see one of them, I will see the other one too. When I get stuck in anything, they have always been there for me to help me figure out what to do next. Dr. Bunlung is good at life advising—he always asks me questions that pull myself to think.</p>
                 
                 <h2>Contact</h2>
-                <p>Feel free to reach out if you have any questions or just want to say hi!</p>
+                <p>📍 689/772 Supalai Veranda, Bang Sue, Bang Sue, Thailand, 10800</p>
+                <p>📧 <a href="mailto:patthanan.bh@gmail.com">patthanan.bh@gmail.com</a></p>
             </div>
         </article>
     </main>
@@ -50,6 +73,8 @@
         </div>
     </footer>
 
+    <script src="js/posts.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/sidebar.js"></script>
 </body>
 </html>

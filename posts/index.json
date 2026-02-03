@@ -1,0 +1,72 @@
+{
+    "categories": [
+        {
+            "name": "Books Review",
+            "slug": "Books Review",
+            "subcategories": [],
+            "posts": []
+        },
+        {
+            "name": "Electrical",
+            "slug": "Electrical",
+            "subcategories": [
+                {
+                    "name": "Control Systems",
+                    "slug": "Control Systems",
+                    "posts": []
+                },
+                {
+                    "name": "Electric Drive",
+                    "slug": "Electric Drive",
+                    "posts": []
+                },
+                {
+                    "name": "Embedded System",
+                    "slug": "Embedded System",
+                    "posts": []
+                }
+            ],
+            "posts": []
+        },
+        {
+            "name": "Programming",
+            "slug": "Programming",
+            "subcategories": [],
+            "posts": []
+        },
+        {
+            "name": "Personal",
+            "slug": "personal",
+            "subcategories": [],
+            "posts": [
+                {
+                    "slug": "welcome-to-my-blog",
+                    "title": "Welcome to My Blog",
+                    "date": "February 2, 2026",
+                    "author": "Bean",
+                    "excerpt": "Hello and welcome! This is my first blog post where I share what this blog is all about."
+                }
+            ]
+        },
+        {
+            "name": "Technology",
+            "slug": "technology",
+            "subcategories": [
+                {
+                    "name": "Tutorials",
+                    "slug": "tutorials",
+                    "posts": [
+                        {
+                            "slug": "getting-started-with-markdown",
+                            "title": "Getting Started with Markdown",
+                            "date": "February 2, 2026",
+                            "author": "Bean",
+                            "excerpt": "Learn the basics of Markdown syntax and how to write beautiful formatted content."
+                        }
+                    ]
+                }
+            ],
+            "posts": []
+        }
+    ]
+}

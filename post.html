@@ -14,10 +14,17 @@
 <body>
     <header>
         <nav class="container">
-            <a href="index.html" class="logo">My Blog</a>
+            <div class="nav-left">
+                <button class="hamburger" id="hamburger" aria-label="Open menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="index.html" class="logo">My Blog</a>
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
+                <li><a href="about.html">About Me</a></li>
             </ul>
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
                 <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
@@ -25,6 +32,18 @@
             </button>
         </nav>
     </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Categories</h3>
+            <button class="sidebar-close" id="sidebar-close" aria-label="Close menu">&times;</button>
+        </div>
+        <nav class="sidebar-nav" id="sidebar-nav">
+            <!-- Categories will be loaded here -->
+        </nav>
+    </aside>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <main class="container">
         <article class="post-content">
@@ -50,6 +69,7 @@
 
     <script src="js/posts.js"></script>
     <script src="js/theme.js"></script>
+    <script src="js/sidebar.js"></script>
     <script>
         // Configure marked with highlight.js
         marked.setOptions({
@@ -63,42 +83,77 @@
             gfm: true
         });
 
-        // Get post slug from URL
+        // Get post info from URL
         const urlParams = new URLSearchParams(window.location.search);
         const slug = urlParams.get('slug');
+        const category = urlParams.get('category');
+        const subcategory = urlParams.get('subcategory');
 
-        if (slug) {
-            // Find the post
-            const post = posts.find(p => p.slug === slug);
-            
-            if (post) {
-                document.title = `${post.title} - My Blog`;
-                document.getElementById('post-title').textContent = post.title;
-                document.getElementById('post-date').textContent = post.date;
-                document.getElementById('post-author').textContent = `by ${post.author}`;
-                
-                // Fetch and render the markdown file
-                fetch(`posts/${slug}.md`)
-                    .then(response => {
-                        if (!response.ok) throw new Error('Post not found');
-                        return response.text();
-                    })
-                    .then(markdown => {
-                        document.getElementById('content').innerHTML = marked.parse(markdown);
-                        // Apply syntax highlighting to code blocks
-                        document.querySelectorAll('pre code').forEach((block) => {
-                            hljs.highlightElement(block);
-                        });
-                    })
-                    .catch(error => {
-                        document.getElementById('content').innerHTML = '<p>Sorry, this post could not be loaded.</p>';
-                    });
-            } else {
-                document.getElementById('content').innerHTML = '<p>Post not found.</p>';
+        async function loadPost() {
+            if (!slug) {
+                window.location.href = 'index.html';
+                return;
             }
-        } else {
-            window.location.href = 'index.html';
+
+            // Build the path based on category/subcategory
+            let postPath = 'posts/';
+            if (category) postPath += decodeURIComponent(category) + '/';
+            if (subcategory) postPath += decodeURIComponent(subcategory) + '/';
+            postPath += slug + '.md';
+
+            // Fetch post metadata from index.json
+            try {
+                const indexResponse = await fetch('posts/index.json');
+                const indexData = await indexResponse.json();
+                
+                // Find the post in the index
+                let postMeta = null;
+                for (const cat of indexData.categories) {
+                    // Check posts directly in category
+                    const directPost = cat.posts?.find(p => p.slug === slug);
+                    if (directPost && cat.slug === category) {
+                        postMeta = directPost;
+                        break;
+                    }
+                    // Check posts in subcategories
+                    for (const subcat of (cat.subcategories || [])) {
+                        const subPost = subcat.posts?.find(p => p.slug === slug);
+                        if (subPost && subcat.slug === subcategory) {
+                            postMeta = subPost;
+                            break;
+                        }
+                    }
+                    if (postMeta) break;
+                }
+
+                if (postMeta) {
+                    document.title = `${postMeta.title} - My Blog`;
+                    document.getElementById('post-title').textContent = postMeta.title;
+                    document.getElementById('post-date').textContent = postMeta.date;
+                    document.getElementById('post-author').textContent = `by ${postMeta.author}`;
+                }
+            } catch (error) {
+                console.error('Failed to load post metadata:', error);
+            }
+
+            // Fetch and render the markdown file
+            try {
+                const response = await fetch(postPath);
+                if (!response.ok) throw new Error('Post not found');
+                const markdown = await response.text();
+                
+                document.getElementById('content').innerHTML = marked.parse(markdown);
+                
+                // Apply syntax highlighting to code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+            } catch (error) {
+                document.getElementById('content').innerHTML = '<p>Sorry, this post could not be loaded.</p>';
+            }
         }
+
+        loadPost();
     </script>
 </body>
 </html>

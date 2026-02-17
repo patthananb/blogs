@@ -5,43 +5,21 @@ async function renderPosts() {
     const postList = document.getElementById('post-list');
     if (!postList) return;
 
-    // Fetch posts from index.json
+    // Show loading skeleton
+    postList.innerHTML = Array(2).fill(`
+        <article class="post-card skeleton">
+            <div class="skeleton-badge"></div>
+            <div class="skeleton-title"></div>
+            <div class="skeleton-meta"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-text short"></div>
+        </article>
+    `).join('');
+
     let allPosts = [];
     try {
-        const response = await fetch('posts/index.json');
-        const data = await response.json();
-        
-        // Flatten all posts from categories and subcategories
-        data.categories.forEach(category => {
-            // Posts directly in category
-            if (category.posts) {
-                category.posts.forEach(post => {
-                    allPosts.push({
-                        ...post,
-                        categorySlug: category.slug,
-                        categoryName: category.name,
-                        subcategorySlug: null,
-                        subcategoryName: null
-                    });
-                });
-            }
-            // Posts in subcategories
-            if (category.subcategories) {
-                category.subcategories.forEach(subcategory => {
-                    if (subcategory.posts) {
-                        subcategory.posts.forEach(post => {
-                            allPosts.push({
-                                ...post,
-                                categorySlug: category.slug,
-                                categoryName: category.name,
-                                subcategorySlug: subcategory.slug,
-                                subcategoryName: subcategory.name
-                            });
-                        });
-                    }
-                });
-            }
-        });
+        const data = await loadPostsIndex();
+        allPosts = flattenPosts(data);
     } catch (error) {
         console.error('Failed to load posts:', error);
         postList.innerHTML = '<p>Failed to load posts.</p>';

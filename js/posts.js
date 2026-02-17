@@ -1,34 +1,41 @@
-// Posts data - Add your new posts here
-// The slug should match the markdown filename in the posts/ folder
+// Posts utility module
+// All post data is managed in posts/index.json
+// This file provides shared helper functions for loading post data.
 
-const posts = [
-    {
-        slug: "welcome-to-my-blog",
-        title: "Welcome to My Blog",
-        date: "February 2, 2026",
-        author: "Bean",
-        excerpt: "Hello and welcome! This is my first blog post where I share what this blog is all about and what you can expect to find here.",
-        category: "Personal",
-        subcategory: null
-    },
-    {
-        slug: "getting-started-with-markdown",
-        title: "Getting Started with Markdown",
-        date: "February 2, 2026",
-        author: "Bean",
-        excerpt: "Learn the basics of Markdown syntax and how to write beautiful formatted content for your blog posts.",
-        category: "Technology",
-        subcategory: "Tutorials"
-    }
-];
+async function loadPostsIndex() {
+    const response = await fetch('posts/index.json');
+    return response.json();
+}
 
-// HOW TO ADD A NEW POST:
-// 1. Create a new .md file in the posts/ folder (e.g., posts/my-new-post.md)
-// 2. Add a new entry to the posts array above with:
-//    - slug: filename without .md extension
-//    - title: your post title
-//    - date: publication date
-//    - author: your name
-//    - excerpt: short description for the homepage
-//    - category: main category (e.g., "Technology", "Personal", "Projects")
-//    - subcategory: optional subcategory (e.g., "Tutorials", "Reviews") or null
+function flattenPosts(data) {
+    const allPosts = [];
+    data.categories.forEach(category => {
+        if (category.posts) {
+            category.posts.forEach(post => {
+                allPosts.push({
+                    ...post,
+                    categorySlug: category.slug,
+                    categoryName: category.name,
+                    subcategorySlug: null,
+                    subcategoryName: null
+                });
+            });
+        }
+        if (category.subcategories) {
+            category.subcategories.forEach(subcategory => {
+                if (subcategory.posts) {
+                    subcategory.posts.forEach(post => {
+                        allPosts.push({
+                            ...post,
+                            categorySlug: category.slug,
+                            categoryName: category.name,
+                            subcategorySlug: subcategory.slug,
+                            subcategoryName: subcategory.name
+                        });
+                    });
+                }
+            });
+        }
+    });
+    return allPosts;
+}

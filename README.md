@@ -1,32 +1,34 @@
-# My Blog
+# Patthanan B — Blog
 
-A simple, static blog website that renders Markdown content. No backend required - perfect for GitHub Pages!
+A simple, static blog website that renders Markdown content. No backend required — perfect for GitHub Pages!
 
 ## ✨ Features
 
 - 📝 Write posts in **Markdown**
-- 📁 **Folder-based categories** - organize posts by folders
-- 🌙 **Dark/Light mode** toggle
+- 📁 **Folder-based categories** — organize posts by folders
+- 🌙 **Dark/Light mode** toggle (code blocks auto-switch theme too)
 - ☰ **Sidebar navigation** with collapsible categories
-- 🎨 **Syntax highlighting** for code blocks
-- 📱 **Responsive design** - works on mobile and desktop
-- 🚀 **Zero backend** - fully static, deploy anywhere
+- 🎨 **Syntax highlighting** for code blocks (highlight.js)
+- 🔒 **HTML sanitization** via DOMPurify
+- 📱 **Responsive design** — works on mobile and desktop
+- 🚀 **Zero backend** — fully static, deploy anywhere
 
 ## 📁 Folder Structure
 
 ```
 blogs/
 ├── index.html              # Homepage
-├── post.html               # Post template
+├── post.html               # Post template (loads Markdown)
 ├── about.html              # About page
 ├── css/
-│   └── style.css           # Styles
+│   └── style.css           # All styles + loading skeleton
 ├── js/
-│   ├── main.js             # Homepage functionality
+│   ├── main.js             # Homepage post rendering
+│   ├── posts.js            # Shared helpers (loadPostsIndex, flattenPosts)
 │   ├── sidebar.js          # Sidebar navigation
 │   └── theme.js            # Dark/light mode
 └── posts/
-    ├── index.json          # Post registry (IMPORTANT!)
+    ├── index.json          # ⭐ Post registry (single source of truth)
     ├── Category1/          # Category folder
     │   └── my-post.md
     └── Category2/
@@ -40,8 +42,8 @@ blogs/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/myBlogs.git
-   cd myBlogs
+   git clone <your-repo-url>
+   cd blogs
    ```
 
 2. Start a local server:
@@ -56,7 +58,7 @@ blogs/
 1. Push your code to GitHub
 2. Go to **Settings** → **Pages**
 3. Select **Deploy from a branch** → **main** → **/ (root)**
-4. Your blog will be live at `https://yourusername.github.io/myBlogs/`
+4. Your blog will be live at `https://<username>.github.io/<repo>/`
 
 ## 📝 How to Add a New Post
 
@@ -189,7 +191,7 @@ Your post will appear on the homepage and in the sidebar.
 
 Edit the logo text in `index.html`, `post.html`, and `about.html`:
 ```html
-<a href="index.html" class="logo">My Blog</a>
+<a href="index.html" class="logo">Patthanan B</a>
 ```
 
 ### Modify Colors
@@ -203,6 +205,11 @@ Edit CSS variables in `css/style.css`:
 }
 ```
 
+## 🔒 Security Notes
+
+- **DOMPurify** sanitizes all Markdown-rendered HTML before injection.
+- CDN scripts include **Subresource Integrity** (`integrity` + `crossorigin`) hashes so tampered files are rejected by the browser.
+
 ## 📄 License
 
-MIT License - feel free to use and modify!
+MIT License — feel free to use and modify!

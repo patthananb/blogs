@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function openSidebar() {
         sidebar.classList.add('open');
         sidebarOverlay.classList.add('show');
+        hamburger.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
     }
 
@@ -124,6 +125,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     function closeSidebar() {
         sidebar.classList.remove('open');
         sidebarOverlay.classList.remove('show');
+        hamburger.setAttribute('aria-expanded', 'false');
         document.body.style.overflow = '';
     }
 
